@@ -36,7 +36,7 @@ describe('Widok profilu uzytkownika', () => {
 
     cy.url().should('include', '/prof.phtml');
 
-    cy.contains('jeśli nie masz jeszcze 13 lat, zapytaj rodziców, co możesz tu podać').should('be.visible'); // Adjust based on actual profile page content
+    cy.contains('jeśli nie masz jeszcze 13 lat, zapytaj rodziców, co możesz tu podać').should('be.visible');
   });
 });
 
