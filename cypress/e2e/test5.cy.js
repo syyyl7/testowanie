@@ -1,10 +1,46 @@
-describe('Kontakt', () => {
-  it('Przejscie do strony "Kontakt"', () => {
-    cy.visit('https://www.wakacje.pl/')
-    cy.get('footer').within(() => {
-      cy.contains('Kontakt').click()
-    })
-    cy.url().should('include', '/kontakt')
-    cy.get('.contact-page').should('be.visible')
-  })
-})
+Cypress.on('uncaught:exception', (err, runnable) => {
+  return false;
+});
+
+describe('View User Profile', () => {
+  before(() => {
+    cy.visit('https://www.kurnik.pl/login.phtml');
+
+    cy.get('button').contains('zaloguj').click();
+  
+  
+    cy.get('input[name="username"]').type('newuser126');
+    cy.get('input[name="pw"]').type('password123');
+
+
+    cy.get('button').contains('zaloguj').click();
+
+  });
+
+  it('should view the user profile', () => {
+
+    cy.visit('https://www.kurnik.pl/');
+
+    cy.window().then((win) => {
+      cy.stub(win, 'open').callsFake((url) => {
+        win.location.href = url;
+      }).as('windowOpen');
+    });
+
+    cy.get('select[onchange*="window.open"]').should('contain', '-- newuser126 --');
+
+    cy.get('select[onchange*="window.open"]').select('/prof.phtml');
+
+
+    cy.get('@windowOpen').should('be.called');
+
+    cy.url().should('include', '/prof.phtml');
+
+    cy.contains('jeśli nie masz jeszcze 13 lat, zapytaj rodziców, co możesz tu podać').should('be.visible'); // Adjust based on actual profile page content
+  });
+});
+
+
+
+
+

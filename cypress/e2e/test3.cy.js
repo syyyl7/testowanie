@@ -1,14 +1,31 @@
-describe('Filtrowanie', () => {
-  it('Filtrowanie - cena', () => {
-    cy.visit('https://www.wakacje.pl/')
-    cy.get('input[placeholder="Wpisz nazwę destynacji"]').type('Grecja')
-    cy.get('button[type="submit"]').click()
-    cy.url().should('include', '/search')
-    cy.get('.filter-price-range').within(() => {
-      cy.get('input.min-price').clear().type('1000')
-      cy.get('input.max-price').clear().type('5000')
-    })
-    cy.get('button.apply-filters').click()
-    cy.get('.search-results').should('contain', 'Grecja')
-  })
-})
+Cypress.on('uncaught:exception', (err, runnable) => {
+  
+  return false;
+});
+
+describe('Wejscie do gry jako gosc', () => {
+  it('wejscie do gry jako gosc', () => {
+    cy.visit('https://www.kurnik.pl/');
+
+    
+    cy.get('a[href="/szachy/"]').contains('szachy').click();
+
+    
+    cy.window().then((win) => {
+      cy.stub(win, 'open').callsFake((url) => {
+        win.location.href = url;
+      }).as('windowOpen');
+    });
+
+    
+    cy.get('button').contains('gość').click();
+
+    cy.get('@windowOpen').should('be.called').then((stub) => {
+      const url = stub.args[0][0];
+      cy.visit(url);
+    });
+
+    cy.url().should('include', '/szachy');
+    
+  });
+});

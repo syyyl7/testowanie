@@ -1,9 +1,21 @@
-describe('Wyszukiwanie', () => {
-  it('szukanie destynacji', () => {
-    cy.visit('https://www.wakacje.pl/')
-    cy.get('input[placeholder="Wpisz nazwę destynacji"]').type('Grecja')
-    cy.get('button[type="submit"]').click()
-    cy.url().should('include', '/search')
-    cy.get('.search-results').should('contain', 'Grecja')
-  })
-})
+Cypress.on('uncaught:exception', (err, runnable) => {
+
+  return false;
+});
+describe('Logowanie', () => {
+  it('powinno zalogowac sie na istniejacym koncie uzytkownika', () => {
+ 
+    cy.visit('https://www.kurnik.pl/login.phtml');
+    cy.get('button').contains('zaloguj').click();
+  
+
+    cy.get('input[name="username"]').type('newuser126');
+    cy.get('input[name="pw"]').type('password123');
+
+
+    cy.get('button').contains('zaloguj').click();
+    cy.get('select[onchange*="window.open"]').should('exist')
+      .and('contain', '-- newuser126 --');
+  });
+});
+
