@@ -2,7 +2,7 @@ Cypress.on('uncaught:exception', (err, runnable) => {
   return false;
 });
 
-describe('View User Profile', () => {
+describe('Widok profilu uzytkownika', () => {
   before(() => {
     cy.visit('https://www.kurnik.pl/login.phtml');
 
@@ -17,7 +17,7 @@ describe('View User Profile', () => {
 
   });
 
-  it('should view the user profile', () => {
+  it('widok profilu uzyytkownika', () => {
 
     cy.visit('https://www.kurnik.pl/');
 
